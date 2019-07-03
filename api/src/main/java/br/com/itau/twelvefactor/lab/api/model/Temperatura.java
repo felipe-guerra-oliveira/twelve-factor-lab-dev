@@ -77,7 +77,7 @@ public class Temperatura implements Serializable, Comparable<Temperatura> {
 		result.append("{ Id: ").append(id).append(", ");
 		result.append("Cidade: ").append(name).append(", ");
 		result.append("Temperatura: ").append("{Valor: ");
-		result.append(this.main.getValor()).append("} }");
+		result.append(this.main!=null ? this.main.getValor() : "-").append("} }");
 		
 		return result.toString();
 	}

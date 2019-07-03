@@ -5,6 +5,8 @@ package br.com.itau.twelvefactor.lab.api.service;
 
 import java.io.Serializable;
 
+import br.com.itau.twelvefactor.lab.api.model.Temperatura;
+
 /**
  * @author felipeguerraoliveira
  *
@@ -20,6 +22,6 @@ public interface DadosTemperaturaService extends Serializable {
 	 * </p>
 	 * @param cidadePais (Ex.: London,uk)
 	 */
-	public void consultarEGravarTemperaturaPorCidadeEPais(String cidadePais);
+	public Temperatura consultarEGravarTemperaturaPorCidadeEPais(String cidadePais);
 
 }
