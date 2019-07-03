@@ -3,11 +3,10 @@
  */
 package br.com.itau.twelvefactor.lab.api.integration;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.client.RestTemplate;
 
 import br.com.itau.twelvefactor.lab.api.model.Temperatura;
 
@@ -17,27 +16,22 @@ import br.com.itau.twelvefactor.lab.api.model.Temperatura;
  */
 public class TemperaturaIntegrationServiceTest {
 
-	public String url;
-	public String appID;
+	private DadosTemperaturaApi dadosTemperaturaApi; 
 	
 	@Before
 	public void setUp() {
-		this.url = "http://api.openweathermap.org/data/2.5/weather?q=";
-		this.appID = "2a5145f9f367e7a725bb8b6f3ea92ff0";
+		this.dadosTemperaturaApi = new DadosTemperaturaApi();
+		this.dadosTemperaturaApi.setUrl("http://api.openweathermap.org/data/2.5/weather?q=");
+		this.dadosTemperaturaApi.setToken("2a5145f9f367e7a725bb8b6f3ea92ff0");
 	}
 	
 	
 	@Test
 	public void testConsultarTemperaturaViGET_Sucesso() throws Exception {
-		RestTemplate restTemplate = new RestTemplate();
+		Temperatura assertResult = dadosTemperaturaApi.consultarTemperaturaAtualPelaCidadeEPais("London,uk");
 		
-		String getUrl = this.url + "London,uk&APPID=" + this.appID;
-		
-		Temperatura result = restTemplate.getForObject(getUrl, Temperatura.class);
-		
-		assertNotNull(result);
-		
-		System.out.println("RESULTADO: \r\n" + result);
+		System.out.println(assertResult.toString());
+		assertEquals("London", assertResult.getName());
 	}
 	
 }

@@ -5,21 +5,39 @@ package br.com.itau.twelvefactor.lab.api.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author felipeguerraoliveira
  *
  */
+@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Temperatura implements Serializable {
+public class Temperatura implements Serializable, Comparable<Temperatura> {
 
 	private static final long serialVersionUID = -8765465781L;
 	
+	public Temperatura() {
+		super();
+	}
+	
+	public Temperatura(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	@Id
 	private Long id;
 	
+	@Column(name = "cidade")
 	private String name;
 	
+	@Transient
 	private DadosTemperatura main;
 
 	public Long getId() {
@@ -46,6 +64,11 @@ public class Temperatura implements Serializable {
 	public void setMain(DadosTemperatura main) {
 		this.main = main;
 	}
+	
+	@Override
+	public int compareTo(Temperatura o) {
+		return o.getId().compareTo(this.getId());
+	}
 
 	@Override
 	public String toString() {
@@ -57,6 +80,22 @@ public class Temperatura implements Serializable {
 		result.append(this.main.getValor()).append("} }");
 		
 		return result.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Temperatura))
+			return false;
+		Temperatura other = (Temperatura) obj;
+		if (id == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!id.equals(other.getId()))
+			return false;
+		
+		return true;
 	}
 
 }
