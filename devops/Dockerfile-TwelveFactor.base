@@ -25,18 +25,30 @@ RUN bash -c 'echo JAVA_HOME=/opt/java/jdk-11.0.2 >> /etc/environment'
 RUN bash -c 'echo JAVA_HOME=/opt/java/jdk-11.0.2 >> ~/.bashrc'
 RUN bash -c 'echo M2_HOME=/opt/maven/apache-maven-3.6.0 >> ~/.bashrc'
 
+ENV JAVA_HOME /opt/java/jdk-11.0.2
+ENV M2_HOME /opt/maven/apache-maven-3.6.0
+
 RUN mkdir -p /app/twelve-factor
 
 WORKDIR /app/twelve-factor
 
-ENV JAVA_HOME /opt/java/jdk-11.0.2
-ENV M2_HOME /opt/maven/apache-maven-3.6.0
-
 RUN git clone https://github.com/felipe-guerra-oliveira/twelve-factor-lab-dev.git .
 
+RUN mkdir -p /app/twelve-factor/bin
+
+COPY start-up.sh /app/twelve-factor/bin
+COPY twelve-factor-api.sh /usr/local/bin
+COPY TwelveFactorApi.service /etc/systemd/system
+
+RUN chmod +x /app/twelve-factor/bin/start-up.sh \
+  &&  chmod +x /usr/local/bin/twelve-factor-api.sh
+
 # Build & Test & Run
-RUN cd /app/twelve-factor/api && chmod +x start-up.sh
+RUN cd /app/twelve-factor/api \
+  && chmod +x start-up.sh \
+  && $M2_HOME/bin/mvn package \
+  && mv target/api-1.0.0.jar /app/twelve-factor/bin
 
-RUN $M2_HOME/bin/mvn package
+RUN systemctl enable TwelveFactorApi
 
-ENTRYPOINT ["./start-up.sh"]
+ENTRYPOINT ["/app/twelve-factor/bin/start-up.sh"]

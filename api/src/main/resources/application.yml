@@ -34,6 +34,12 @@ server:
   address: 0.0.0.0
   port: 9000
   
+logging:
+  level:
+    root: DEBUG
+  path: /var/log
+  file: twelve-factor-api.log
+  
 management:
   health:
     db:
