@@ -4,9 +4,9 @@ After network.target = TwelveFactorApi.service
 
 [Service]
 Type = forking
-ExecStart = /usr/local/bin/TwelveFactorApi.sh start
-ExecStop = /usr/local/bin/TwelveFactorApi.sh stop
-ExecReload = /usr/local/bin/TwelveFactorApi.sh reload
+ExecStart = /usr/local/bin/twelve-factor-api.sh start
+ExecStop = /usr/local/bin/twelve-factor-api.sh stop
+ExecReload = /usr/local/bin/twelve-factor-api.sh reload
 
 [Install]
 WantedBy=multi-user.target

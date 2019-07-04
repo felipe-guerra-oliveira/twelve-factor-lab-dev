@@ -51,4 +51,4 @@ RUN cd /app/twelve-factor/api \
 
 RUN systemctl enable TwelveFactorApi
 
-ENTRYPOINT ["/app/twelve-factor/bin/start-up.sh"]
+CMD ["systemctl", "start", "TwelveFactorApi"]
