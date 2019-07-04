@@ -1,4 +1,6 @@
 #!/bin/sh
+
+# Fonte: http://www.jcgonzalez.com/ubuntu-16-java-service-wrapper-example
 SERVICE_NAME=TwelveFactorApi
 PATH_TO_JAR=/app/twelve-factor/bin/api-1.0.0.jar
 PID_PATH_NAME=/tmp/TwelveFactorApi-pid
