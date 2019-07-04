@@ -1,0 +1,42 @@
+FROM ubuntu:16.04
+MAINTAINER Felipe Guerra <felipe.guerra-oliveira@itau-unibanco.com.br>
+
+# Install dependencies
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+    curl \
+    git \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common
+
+# "Install Java"
+RUN curl -s https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz --output openjdk-11.0.2.tar.gz
+
+RUN mkdir -p /opt/java && tar -xvf openjdk-11.0.2.tar.gz -C /opt/java && rm -rf openjdk-11.0.2.tar.gz
+
+# "Install Maven"
+RUN curl -s http://mirror.nbtelecom.com.br/apache/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz --output apache-maven-3.6.0-bin.tar.gz
+
+RUN mkdir -p /opt/maven && tar -xvf apache-maven-3.6.0-bin.tar.gz -C /opt/maven && rm -rf apache-maven-3.6.0-bin.tar.gz
+
+# Environment Variables
+RUN bash -c 'echo PATH=$PATH:/opt/maven/apache-maven-3.6.0/bin:/opt/java/jdk-11.0.2/bin > /etc/environment'
+RUN bash -c 'echo JAVA_HOME=/opt/java/jdk-11.0.2 >> /etc/environment'
+RUN bash -c 'echo JAVA_HOME=/opt/java/jdk-11.0.2 >> ~/.bashrc'
+RUN bash -c 'echo M2_HOME=/opt/maven/apache-maven-3.6.0 >> ~/.bashrc'
+
+RUN mkdir -p /app/twelve-factor
+
+WORKDIR /app/twelve-factor
+
+ENV JAVA_HOME /opt/java/jdk-11.0.2
+ENV M2_HOME /opt/maven/apache-maven-3.6.0
+
+RUN git clone https://github.com/felipe-guerra-oliveira/twelve-factor-lab-dev.git .
+
+# Build & Test & Run
+RUN cd /app/twelve-factor/api && chmod +x start-up.sh
+
+RUN $M2_HOME/bin/mvn package
+
+ENTRYPOINT ["./start-up.sh"]

@@ -1,0 +1,40 @@
+twelvefactor:
+  weather:
+    api:
+      url: http://api.openweathermap.org/data/2.5/weather?q=
+      token: "2a5145f9f367e7a725bb8b6f3ea92ff0"
+
+spring:
+  application:
+    name: "Spring Boot Microservice API - 12 Factor"
+    
+  profiles:
+    active:
+    - dev
+    
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: none
+  
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  
+  security:
+    user:
+      name: comunidade
+      password: "institucional"
+      
+  h2:
+    console:
+      enabled: true
+    
+server:
+  address: 0.0.0.0
+  port: 9000
+  
+management:
+  health:
+    db:
+      enabled: true
