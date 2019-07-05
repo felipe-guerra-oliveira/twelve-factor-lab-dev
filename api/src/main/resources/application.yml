@@ -20,23 +20,28 @@ spring:
   
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-  
+    
   security:
     user:
       name: comunidade
-      password: "institucional"
-      
-  h2:
-    console:
-      enabled: true
+      password: institucional
     
 server:
   address: 0.0.0.0
   port: 9000
+
+security:
+  oauth2:
+    client:
+      client-id: twelve-factor-client
+      client-secret: ghd8y2tt7-u7d28t672td762-987968tyghubj
+      scope: read,write
+      auto-approve-scopes: '.*'
   
 logging:
   level:
-    root: DEBUG
+    root: INFO
+    org.springframework.security: DEBUG
   path: /var/log
   file: twelve-factor-api.log
   

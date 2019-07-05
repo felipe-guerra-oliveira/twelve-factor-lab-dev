@@ -2,6 +2,8 @@ package br.com.itau.twelvefactor.lab.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -11,11 +13,13 @@ import br.com.itau.twelvefactor.lab.api.model.Temperatura;
 import br.com.itau.twelvefactor.lab.api.service.DadosTemperaturaService;
 
 @RestController
+@EnableAuthorizationServer
 public class TemperaturaController {
 	
 	@Autowired
 	private DadosTemperaturaService dadosTemperaturaService;
 	
+	@PreAuthorize("#oauth2.hasScope('read')")
 	@GetMapping(path = "/twelve-factor-app/temperatura/{cidadePais}",  
 				produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Temperatura consultarEGravarTemperaturaPorCidadeEPais(@PathVariable String cidadePais) {

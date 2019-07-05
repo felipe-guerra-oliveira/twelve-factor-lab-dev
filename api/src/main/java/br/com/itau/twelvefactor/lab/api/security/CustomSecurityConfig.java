@@ -14,10 +14,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/actuator/**", "/h2-console/**").permitAll()
 			.anyRequest()
-			.authenticated()
-			.and()
-			.csrf()
-			.disable();
+			.authenticated();
 	}
 
 }

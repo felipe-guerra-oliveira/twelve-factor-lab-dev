@@ -25,7 +25,6 @@ public class TemperaturaIntegrationServiceTest {
 		this.dadosTemperaturaApi.setToken("2a5145f9f367e7a725bb8b6f3ea92ff0");
 	}
 	
-	
 	@Test
 	public void testConsultarTemperaturaViGET_Sucesso() throws Exception {
 		Temperatura assertResult = dadosTemperaturaApi.consultarTemperaturaAtualPelaCidadeEPais("London,uk");
