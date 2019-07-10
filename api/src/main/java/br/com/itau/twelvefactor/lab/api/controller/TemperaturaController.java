@@ -1,5 +1,7 @@
 package br.com.itau.twelvefactor.lab.api.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +20,8 @@ import br.com.itau.twelvefactor.lab.api.service.DadosTemperaturaService;
 @RequestMapping("twelve-factor-app")
 public class TemperaturaController {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(TemperaturaController.class);
+	
 	@Autowired
 	private DadosTemperaturaService dadosTemperaturaService;
 	
@@ -25,6 +29,8 @@ public class TemperaturaController {
 	@GetMapping(path = "/temperatura/{cidadePais}",  
 				produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Temperatura consultarEGravarTemperaturaPorCidadeEPais(@PathVariable String cidadePais) {
+		LOG.warn("######### Cidade,país {}", cidadePais);
+		
 		return this.dadosTemperaturaService.consultarEGravarTemperaturaPorCidadeEPais(cidadePais);
 	}
 

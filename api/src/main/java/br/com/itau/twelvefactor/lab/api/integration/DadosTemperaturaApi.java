@@ -4,11 +4,18 @@
 package br.com.itau.twelvefactor.lab.api.integration;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.itau.twelvefactor.lab.api.model.Temperatura;
@@ -36,6 +43,16 @@ public class DadosTemperaturaApi implements Serializable {
 		this.restTemplate = new RestTemplate();
 	}
 	
+	private HttpHeaders getHttpHeaders() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		List<MediaType> acceptList = new ArrayList<>();
+		acceptList.add(MediaType.APPLICATION_JSON);
+		
+		httpHeaders.setAccept(acceptList);
+		
+		return httpHeaders;
+	}
+	
 	/**
 	 * @param cidadePais (Ex.: London,uk)
 	 * @return instância de Temperatura com os dados extraídos do JSON
@@ -45,11 +62,17 @@ public class DadosTemperaturaApi implements Serializable {
 		StringBuffer urlToCall = new StringBuffer();
 		
 		try {
-			urlToCall.append(url).append(cidadePais);
+			urlToCall.append(url).append(new String(cidadePais.getBytes("ISO-8859-1"), "UTF-8"));
 			urlToCall.append("&").append("APPID=");
 			urlToCall.append(this.token);
+
+			ResponseEntity<Temperatura> response = this.restTemplate.exchange(urlToCall.toString(), 
+																			HttpMethod.GET,
+																			new HttpEntity<Temperatura>(getHttpHeaders()), 
+																			Temperatura.class);
+			result = response.getBody();
 			
-			result = this.restTemplate.getForObject(urlToCall.toString(), Temperatura.class);
+			//result = this.restTemplate.getForObject, Temperatura.class);
 			
 		}catch(Exception ex) {
 			LOG.error("Erro ao tentar consultar o serviço de temperatura.", ex);

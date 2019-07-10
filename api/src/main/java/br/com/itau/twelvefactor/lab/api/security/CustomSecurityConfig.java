@@ -12,7 +12,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/actuator/**").permitAll()
+			.antMatchers("/v2/api-docs").permitAll()
 			.anyRequest()
 			.authenticated();
 	}

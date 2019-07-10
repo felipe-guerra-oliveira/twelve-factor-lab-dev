@@ -30,10 +30,7 @@ server:
   tomcat:
     accesslog:
       enabled: true
-      directory: /tmp/log
-
-#  servlet:
-#    context-path: /twelve-factor-app
+      directory: /var/log
   address: 0.0.0.0
   port: 9000
 
@@ -48,7 +45,8 @@ security:
 logging:
   level:
     root: INFO
-    org.springframework.security: DEBUG
+    org.springframework.security: INFO
+    org.apache.coyote.http11: DEBUG
   path: /var/log
   file: 
     max-size: 1MB
