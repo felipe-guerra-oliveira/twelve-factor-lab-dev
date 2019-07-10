@@ -62,17 +62,12 @@ public class DadosTemperaturaApi implements Serializable {
 		StringBuffer urlToCall = new StringBuffer();
 		
 		try {
-			urlToCall.append(url).append(new String(cidadePais.getBytes("ISO-8859-1"), "UTF-8"));
+			urlToCall.append(url).append(cidadePais);
 			urlToCall.append("&").append("APPID=");
 			urlToCall.append(this.token);
 
-			ResponseEntity<Temperatura> response = this.restTemplate.exchange(urlToCall.toString(), 
-																			HttpMethod.GET,
-																			new HttpEntity<Temperatura>(getHttpHeaders()), 
-																			Temperatura.class);
-			result = response.getBody();
-			
-			//result = this.restTemplate.getForObject, Temperatura.class);
+			result = this.restTemplate.getForObject(urlToCall.toString(),
+													Temperatura.class);
 			
 		}catch(Exception ex) {
 			LOG.error("Erro ao tentar consultar o serviço de temperatura.", ex);

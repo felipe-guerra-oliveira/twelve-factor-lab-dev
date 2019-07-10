@@ -7,8 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,9 +26,9 @@ public class TemperaturaController {
 	private DadosTemperaturaService dadosTemperaturaService;
 	
 	@PreAuthorize("#oauth2.hasScope('read')")
-	@GetMapping(path = "/temperatura/{cidadePais}",  
+	@GetMapping(path = "/temperatura",  
 				produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Temperatura consultarEGravarTemperaturaPorCidadeEPais(@PathVariable String cidadePais) {
+	public @ResponseBody Temperatura consultarEGravarTemperaturaPorCidadeEPais(@RequestParam(name = "cidadePais") String cidadePais) {
 		LOG.warn("######### Cidade,país {}", cidadePais);
 		
 		return this.dadosTemperaturaService.consultarEGravarTemperaturaPorCidadeEPais(cidadePais);
