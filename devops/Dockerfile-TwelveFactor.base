@@ -25,9 +25,6 @@ RUN bash -c 'echo JAVA_HOME=/opt/java/jdk-11.0.2 >> /etc/environment'
 RUN bash -c 'echo JAVA_HOME=/opt/java/jdk-11.0.2 >> ~/.bashrc'
 RUN bash -c 'echo M2_HOME=/opt/maven/apache-maven-3.6.0 >> ~/.bashrc'
 
-ENV JAVA_HOME /opt/java/jdk-11.0.2
-ENV M2_HOME /opt/maven/apache-maven-3.6.0
-
 RUN mkdir -p /app/twelve-factor
 
 WORKDIR /app/twelve-factor
@@ -38,7 +35,10 @@ RUN mkdir -p /app/twelve-factor/bin
 
 COPY start-up.sh /app/twelve-factor/bin
 
-RUN chmod +x /app/twelve-factor/bin/start-up.sh #&& chmod +x /usr/local/bin/TwelveFactorApi.sh
+RUN chmod +x /app/twelve-factor/bin/start-up.sh
+
+ENV JAVA_HOME /opt/java/jdk-11.0.2
+ENV M2_HOME /opt/maven/apache-maven-3.6.0
 
 # Build & Test & Run
 RUN cd /app/twelve-factor/api \
